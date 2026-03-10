@@ -13,6 +13,7 @@ button.secondary{background:#2196F3}
 button.small{width:auto;font-size:14px;padding:8px 12px}
 .options button{background:#2196F3}
 .word{font-size:44px;margin:10px 0;font-weight:bold}
+.hint{font-size:18px;margin:10px 0;color:#333}
 .speakBtn{font-size:16px;background:#ff9800;width:auto;padding:10px 14px}
 .correct{background:#4CAF50 !important}
 .wrong{background:#e53935 !important}
@@ -29,7 +30,7 @@ button.small{width:auto;font-size:14px;padding:8px 12px}
 <body>
 <div class="container">
 <h1>English Adventure 🚀</h1>
-<p>Learn • Listen • Win</p>
+<p>Learn • Listen • Guess</p>
 
 <div class="card" id="menu">
 <h2>Choose Week</h2>
@@ -45,6 +46,9 @@ button.small{width:auto;font-size:14px;padding:8px 12px}
 
 <div class="word" id="word"></div>
 <button class="speakBtn" onclick="speakCurrent()">🔊 Hear the word</button>
+
+<div class="hint" id="hint"></div>
+<button class="speakBtn" onclick="speakHint()">🔊 Hear the sentence</button>
 
 <div class="options" id="options"></div>
 
@@ -62,10 +66,94 @@ button.small{width:auto;font-size:14px;padding:8px 12px}
 <script>
 
 const weeks={
-1:[{en:"dog",he:"כלב"},{en:"cat",he:"חתול"},{en:"house",he:"בית"},{en:"water",he:"מים"},{en:"food",he:"אוכל"},{en:"mother",he:"אמא"},{en:"father",he:"אבא"},{en:"brother",he:"אח"},{en:"sister",he:"אחות"},{en:"friend",he:"חבר"},{en:"school",he:"בית ספר"},{en:"teacher",he:"מורה"},{en:"book",he:"ספר"},{en:"pencil",he:"עיפרון"},{en:"bag",he:"תיק"},{en:"table",he:"שולחן"},{en:"chair",he:"כיסא"},{en:"door",he:"דלת"},{en:"window",he:"חלון"},{en:"room",he:"חדר"}],
-2:[{en:"run",he:"לרוץ"},{en:"walk",he:"ללכת"},{en:"jump",he:"לקפוץ"},{en:"sit",he:"לשבת"},{en:"stand",he:"לעמוד"},{en:"eat",he:"לאכול"},{en:"drink",he:"לשתות"},{en:"play",he:"לשחק"},{en:"read",he:"לקרוא"},{en:"write",he:"לכתוב"},{en:"open",he:"לפתוח"},{en:"close",he:"לסגור"},{en:"bring",he:"להביא"},{en:"look",he:"להסתכל"},{en:"listen",he:"להקשיב"},{en:"sleep",he:"לישון"},{en:"wake",he:"להתעורר"},{en:"laugh",he:"לצחוק"},{en:"talk",he:"לדבר"},{en:"think",he:"לחשוב"}],
-3:[{en:"red",he:"אדום"},{en:"blue",he:"כחול"},{en:"green",he:"ירוק"},{en:"yellow",he:"צהוב"},{en:"black",he:"שחור"},{en:"white",he:"לבן"},{en:"orange",he:"כתום"},{en:"purple",he:"סגול"},{en:"brown",he:"חום"},{en:"pink",he:"ורוד"},{en:"big",he:"גדול"},{en:"small",he:"קטן"},{en:"fast",he:"מהיר"},{en:"slow",he:"איטי"},{en:"hot",he:"חם"},{en:"cold",he:"קר"},{en:"happy",he:"שמח"},{en:"sad",he:"עצוב"},{en:"good",he:"טוב"},{en:"bad",he:"רע"}],
-4:[{en:"one",he:"אחד"},{en:"two",he:"שתיים"},{en:"three",he:"שלוש"},{en:"four",he:"ארבע"},{en:"five",he:"חמש"},{en:"six",he:"שש"},{en:"seven",he:"שבע"},{en:"eight",he:"שמונה"},{en:"nine",he:"תשע"},{en:"ten",he:"עשר"},{en:"boy",he:"ילד"},{en:"girl",he:"ילדה"},{en:"baby",he:"תינוק"},{en:"man",he:"גבר"},{en:"woman",he:"אישה"},{en:"day",he:"יום"},{en:"night",he:"לילה"},{en:"morning",he:"בוקר"},{en:"today",he:"היום"},{en:"tomorrow",he:"מחר"}]
+1:[
+{en:"dog",he:"כלב",hint:"The dog is running in the yard."},
+{en:"cat",he:"חתול",hint:"The cat is sleeping on the sofa."},
+{en:"house",he:"בית",hint:"This is my house."},
+{en:"water",he:"מים",hint:"I drink water every day."},
+{en:"food",he:"אוכל",hint:"The food smells very good."},
+{en:"mother",he:"אמא",hint:"My mother helps me with homework."},
+{en:"father",he:"אבא",hint:"My father drives the car."},
+{en:"brother",he:"אח",hint:"My brother plays football."},
+{en:"sister",he:"אחות",hint:"My sister likes music."},
+{en:"friend",he:"חבר",hint:"My friend comes to play."},
+{en:"school",he:"בית ספר",hint:"I go to school every morning."},
+{en:"teacher",he:"מורה",hint:"The teacher explains the lesson."},
+{en:"book",he:"ספר",hint:"I read a book before sleep."},
+{en:"pencil",he:"עיפרון",hint:"I write with a pencil."},
+{en:"bag",he:"תיק",hint:"My bag is full of books."},
+{en:"table",he:"שולחן",hint:"The book is on the table."},
+{en:"chair",he:"כיסא",hint:"Please sit on the chair."},
+{en:"door",he:"דלת",hint:"Close the door please."},
+{en:"window",he:"חלון",hint:"Open the window."},
+{en:"room",he:"חדר",hint:"My room is very clean."}
+],
+2:[
+{en:"run",he:"לרוץ",hint:"I run in the park."},
+{en:"walk",he:"ללכת",hint:"We walk to school."},
+{en:"jump",he:"לקפוץ",hint:"The boy can jump high."},
+{en:"sit",he:"לשבת",hint:"Please sit here."},
+{en:"stand",he:"לעמוד",hint:"Stand near the door."},
+{en:"eat",he:"לאכול",hint:"I eat breakfast."},
+{en:"drink",he:"לשתות",hint:"Drink some water."},
+{en:"play",he:"לשחק",hint:"Children play outside."},
+{en:"read",he:"לקרוא",hint:"I read every night."},
+{en:"write",he:"לכתוב",hint:"Write your name."},
+{en:"open",he:"לפתוח",hint:"Open the book."},
+{en:"close",he:"לסגור",hint:"Close the door."},
+{en:"bring",he:"להביא",hint:"Bring your bag."},
+{en:"look",he:"להסתכל",hint:"Look at the sky."},
+{en:"listen",he:"להקשיב",hint:"Listen to the teacher."},
+{en:"sleep",he:"לישון",hint:"I sleep at night."},
+{en:"wake",he:"להתעורר",hint:"I wake up early."},
+{en:"laugh",he:"לצחוק",hint:"The children laugh."},
+{en:"talk",he:"לדבר",hint:"We talk together."},
+{en:"think",he:"לחשוב",hint:"Think about the answer."}
+],
+3:[
+{en:"red",he:"אדום",hint:"The apple is red."},
+{en:"blue",he:"כחול",hint:"The sky is blue."},
+{en:"green",he:"ירוק",hint:"The grass is green."},
+{en:"yellow",he:"צהוב",hint:"The sun looks yellow."},
+{en:"black",he:"שחור",hint:"The cat is black."},
+{en:"white",he:"לבן",hint:"Snow is white."},
+{en:"orange",he:"כתום",hint:"The orange is sweet."},
+{en:"purple",he:"סגול",hint:"She wears a purple shirt."},
+{en:"brown",he:"חום",hint:"The dog is brown."},
+{en:"pink",he:"ורוד",hint:"The flower is pink."},
+{en:"big",he:"גדול",hint:"The elephant is big."},
+{en:"small",he:"קטן",hint:"The mouse is small."},
+{en:"fast",he:"מהיר",hint:"The car is fast."},
+{en:"slow",he:"איטי",hint:"The turtle is slow."},
+{en:"hot",he:"חם",hint:"The soup is hot."},
+{en:"cold",he:"קר",hint:"The water is cold."},
+{en:"happy",he:"שמח",hint:"The girl is happy."},
+{en:"sad",he:"עצוב",hint:"The boy is sad."},
+{en:"good",he:"טוב",hint:"This cake is good."},
+{en:"bad",he:"רע",hint:"That smell is bad."}
+],
+4:[
+{en:"one",he:"אחד",hint:"I have one apple."},
+{en:"two",he:"שתיים",hint:"I see two birds."},
+{en:"three",he:"שלוש",hint:"There are three dogs."},
+{en:"four",he:"ארבע",hint:"The table has four legs."},
+{en:"five",he:"חמש",hint:"I have five pencils."},
+{en:"six",he:"שש",hint:"Six children play."},
+{en:"seven",he:"שבע",hint:"Seven days in a week."},
+{en:"eight",he:"שמונה",hint:"The spider has eight legs."},
+{en:"nine",he:"תשע",hint:"Nine balloons fly."},
+{en:"ten",he:"עשר",hint:"Count to ten."},
+{en:"boy",he:"ילד",hint:"The boy runs fast."},
+{en:"girl",he:"ילדה",hint:"The girl reads a book."},
+{en:"baby",he:"תינוק",hint:"The baby is sleeping."},
+{en:"man",he:"גבר",hint:"The man drives."},
+{en:"woman",he:"אישה",hint:"The woman smiles."},
+{en:"day",he:"יום",hint:"It is a sunny day."},
+{en:"night",he:"לילה",hint:"Stars shine at night."},
+{en:"morning",he:"בוקר",hint:"Good morning!"},
+{en:"today",he:"היום",hint:"Today we learn English."},
+{en:"tomorrow",he:"מחר",hint:"Tomorrow we play."}
+]
 };
 
 let words=[];
@@ -110,10 +198,16 @@ function speakCurrent(){
 speak(words[index].en);
 }
 
+function speakHint(){
+speak(words[index].hint);
+}
+
 function showWord(){
 const w=words[index];
 
 document.getElementById("word").innerText=w.en;
+document.getElementById("hint").innerText=w.hint;
+
 setTimeout(()=>speak(w.en),300);
 
 let options=[w.he];
