@@ -180,6 +180,12 @@ if(correct){
 btn.classList.add("correct");
 score++;
 updateScore();
+setTimeout(()=>{
+nextWord();
+},3000);
+}else{
+btn.classList.add("wrong");
+}
 }else{
 btn.classList.add("wrong");
 }
