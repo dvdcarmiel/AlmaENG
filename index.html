@@ -176,23 +176,10 @@ updateProgress();
 }
 
 function selectAnswer(btn,correct){
-  if(correct){
-    btn.classList.add("correct");
-    score++;
-    updateScore();
-
-    // disable all buttons after correct answer
-    document.querySelectorAll("#options button").forEach(b=>b.disabled=true);
-  }else{
-    btn.classList.add("wrong");
-  }
-}else{
-btn.classList.add("wrong");
-}
-},3000);
-}else{
-btn.classList.add("wrong");
-}
+if(correct){
+btn.classList.add("correct");
+score++;
+updateScore();
 }else{
 btn.classList.add("wrong");
 }
