@@ -180,8 +180,9 @@ if(correct){
 btn.classList.add("correct");
 score++;
 updateScore();
-setTimeout(()=>{
-nextWord();
+}else{
+btn.classList.add("wrong");
+}
 },3000);
 }else{
 btn.classList.add("wrong");
